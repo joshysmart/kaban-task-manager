@@ -17,7 +17,7 @@ export default function BoardOptions({
   isDark,
 }: Props) {
   const ref = React.useRef(null);
-  const { isLoaded, isSignedIn, user } = useUser();
+  const { isSignedIn, user } = useUser();
   const initails =
     (user?.username && user?.username.charAt(0).toUpperCase()) || "U";
   useOnClickOutside(ref, () => setShowDropDown(false));
@@ -55,7 +55,7 @@ export default function BoardOptions({
         </div>
         <h3 className="">{user?.username ?? "No user"}</h3>
       </div>
-      {user?.username && (
+      {isSignedIn && (
         <SignOutButton>
           <button
             className="px-4 py-1 mt-4 text-base font-medium rounded-full bg-red"
@@ -65,7 +65,7 @@ export default function BoardOptions({
           </button>
         </SignOutButton>
       )}
-      {!user?.username && (
+      {!isSignedIn && (
         <Link
           href={"/sign-in"}
           className="block px-4 py-1 mt-4 text-base font-medium text-center bg-green-700 rounded-full"

@@ -16,6 +16,8 @@ type Props = {
 };
 
 type FormValues = {
+  title: string;
+  description: string;
   subtasks: {
     title: string;
     isCompleted: boolean;
@@ -23,6 +25,14 @@ type FormValues = {
   status: string;
 };
 
+//type FormValues = {
+//  subtasks: {
+//    title: string;
+//    isCompleted: boolean;
+//  }[];
+//  status: string;
+//};
+//
 export default function ViewTask({
   task,
   isDark,
@@ -37,7 +47,7 @@ export default function ViewTask({
     register,
     watch,
     control,
-    formState: { errors },
+    formState: {},
     handleSubmit,
   } = useForm<FormValues>({
     mode: "onChange",
@@ -57,13 +67,16 @@ export default function ViewTask({
       ...watchFieldArray[index],
     };
   });
-  const selectDropdownOptions = boardColumns.map((column) => column.name);
+  const selectDropdownOptions =
+    boardColumns?.map((column) => column.name) ?? [];
 
   useOnClickOutside(ref, () => setViewTask(false));
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     console.log(data);
   };
+
+  console.log(selectDropdownOptions);
 
   return (
     <div className="fixed top-0 left-0 flex items-center justify-center w-full h-screen bg-overlay z-[60] overflow-y-scroll pb-8 px-4 md:px-0">
@@ -163,7 +176,11 @@ export default function ViewTask({
           >
             Current Status
           </p>
-          <Select options={selectDropdownOptions} isDark={isDark} />
+          <Select
+            options={selectDropdownOptions}
+            isDark={isDark}
+            register={register}
+          />
         </form>
       </div>
     </div>

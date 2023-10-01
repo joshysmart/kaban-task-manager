@@ -6,11 +6,13 @@ import Select from "./Select";
 import { cn } from "@/lib/utils";
 import { ButtonPrimary, ButtonSecondary } from "./ui/buttons";
 import { Input, Textarea } from "./ui/input";
+import { createTask } from "@/app/api";
 
 type Props = {
   setShowAddNewTask: React.Dispatch<React.SetStateAction<boolean>>;
   isDark: boolean;
   boardColumns?: Board["columns"];
+  user: any;
 };
 
 type FormValues = {
@@ -18,13 +20,15 @@ type FormValues = {
   description: string;
   subtasks: {
     title: string;
-    isCompleted?: boolean;
+    isCompleted: boolean;
   }[];
+  status: string;
 };
 
 export default function NewTask({
   setShowAddNewTask,
   isDark,
+  user,
   boardColumns,
 }: Props) {
   const ref: React.MutableRefObject<null> = React.useRef(null);
@@ -47,18 +51,28 @@ export default function NewTask({
           isCompleted: false,
         },
       ],
+      status: boardColumns?.[0].name,
     },
   });
   const { fields, append, remove } = useFieldArray({
     control,
     name: "subtasks",
   });
-  const selectDropdownOptions = boardColumns.map((column) => column.name);
+  const selectDropdownOptions =
+    boardColumns?.map((column) => column.name) ?? [];
 
   useOnClickOutside(ref, () => setShowAddNewTask(false));
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    console.log(data, "data");
+    const url = `${process.env.NEXT_PUBLIC_DB_HOST}/user/task`;
+    const task = {
+      ...data,
+      userId: user?.id,
+    };
+    const res = await createTask(url, task);
+    if (res) {
+      setShowAddNewTask(false);
+    }
   };
 
   return (
@@ -91,7 +105,7 @@ export default function NewTask({
             isDark={isDark}
             label="title"
             register={register}
-            maxLength={20}
+            maxLength={50}
             maxLengthMessage="Task title cannot be more than 20 characters"
             requiredMessage="Please enter a title for the task"
             placeholder="e.g. Take a 15 minute break"
@@ -173,7 +187,11 @@ export default function NewTask({
           >
             Status
           </p>
-          <Select options={selectDropdownOptions} isDark={isDark} />
+          <Select
+            options={selectDropdownOptions}
+            isDark={isDark}
+            register={register}
+          />
         </fieldset>
 
         <fieldset className="flex flex-col w-full mt-6">

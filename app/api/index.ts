@@ -44,4 +44,29 @@ async function createBoard(
   return res.json();
 }
 
-export { getBoard, getBoardNames, createBoard };
+async function createTask(
+  url: string,
+  data: {
+    title: string;
+    description: string;
+    status: string;
+    subtasks: {
+      title: string;
+      isCompleted: boolean;
+    }[];
+  }
+) {
+  const res = await fetch(url, {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  if (!res.ok) {
+    throw new Error("Failed to create task");
+  }
+  return res.json();
+}
+
+export { getBoard, getBoardNames, createBoard, createTask };

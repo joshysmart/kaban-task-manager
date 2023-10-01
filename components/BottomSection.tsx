@@ -100,6 +100,7 @@ export default function BottomSection({
           setShowAddNewTask={setShowAddNewTask}
           isDark={isDark}
           boardColumns={board?.columns}
+          user={user}
         />
       )}
       {showEditBoard && (

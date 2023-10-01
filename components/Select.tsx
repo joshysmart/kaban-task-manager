@@ -3,17 +3,23 @@ import { cn } from "@/lib/utils";
 import React from "react";
 import { UseFormRegister, useForm } from "react-hook-form";
 
+type FormValues = {
+  title: string;
+  description: string;
+  subtasks: {
+    title: string;
+    isCompleted: boolean;
+  }[];
+  status: string;
+};
+
 type Props = {
   options: string[];
   isDark: boolean;
+  register: UseFormRegister<FormValues>;
 };
 
-export default function Select({ options, isDark }: Props) {
-  const { register } = useForm({
-    defaultValues: {
-      status: options[0],
-    },
-  });
+export default function Select({ options, isDark, register }: Props) {
   const [selected, setSelected] = React.useState(options[0]);
   const [dropDown, setDropDown] = React.useState(false);
 

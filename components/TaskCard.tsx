@@ -59,6 +59,7 @@ export default function TaskCard({ task, board }: Props) {
           setViewTask={setViewTask}
           setEditTask={setEditTask}
           setDeleteTask={setDeleteTask}
+          boardColumns={board?.columns}
         />
       )}
       {editTask && (
