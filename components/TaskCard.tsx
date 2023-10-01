@@ -7,9 +7,10 @@ import { useAuth } from "@clerk/nextjs";
 
 type Props = {
   task: Board["columns"][number]["tasks"][number];
+  board?: Board;
 };
 
-export default function TaskCard({ task }: Props) {
+export default function TaskCard({ task, board }: Props) {
   const [viewTask, setViewTask] = React.useState(false);
   const [editTask, setEditTask] = React.useState(false);
   const [deleteTask, setDeleteTask] = React.useState(false);
@@ -61,7 +62,12 @@ export default function TaskCard({ task }: Props) {
         />
       )}
       {editTask && (
-        <EditTask task={task} isDark={isDark} setEditTask={setEditTask} />
+        <EditTask
+          task={task}
+          isDark={isDark}
+          setEditTask={setEditTask}
+          boardColumns={board?.columns}
+        />
       )}
       {deleteTask && (
         <DeleteModal

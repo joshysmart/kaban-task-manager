@@ -7,9 +7,10 @@ import CreateBoard from "./CreateBoard";
 
 type Props = {
   board?: Board;
+  user: any;
 };
 
-export default function EmptyBoard({ board }: Props) {
+export default function EmptyBoard({ board, user }: Props) {
   const { theme } = useThemeContext();
   const isDark = theme === "dark";
   const [showEditBoard, setShowEditBoard] = React.useState(false);
@@ -53,7 +54,11 @@ export default function EmptyBoard({ board }: Props) {
         />
       )}
       {createdBoard && (
-        <CreateBoard isDark={isDark} setCreatedBoard={setCreatedBoard} />
+        <CreateBoard
+          isDark={isDark}
+          setCreatedBoard={setCreatedBoard}
+          user={user}
+        />
       )}
     </>
   );

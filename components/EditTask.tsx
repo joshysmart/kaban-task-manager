@@ -12,6 +12,7 @@ type Props = {
   task: Board["columns"][number]["tasks"][number];
   isDark: boolean;
   setEditTask: React.Dispatch<React.SetStateAction<boolean>>;
+  boardColumns?: Board["columns"];
 };
 
 type FormValues = {
@@ -41,6 +42,7 @@ export default function EditTask({ task, isDark, setEditTask }: Props) {
     control,
     name: "subtasks",
   });
+  const selectDropdownOptions = boardColumns.map((column) => column.name);
 
   useOnClickOutside(ref, () => setEditTask(false));
 
@@ -154,7 +156,7 @@ export default function EditTask({ task, isDark, setEditTask }: Props) {
           >
             Status
           </p>
-          <Select options={["Todo", "Doing", "Done"]} isDark={isDark} />
+          <Select options={selectDropdownOptions} isDark={isDark} />
         </fieldset>
 
         <fieldset className="flex flex-col w-full mt-6">

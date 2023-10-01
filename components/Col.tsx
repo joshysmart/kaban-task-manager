@@ -3,8 +3,9 @@ import TaskCard from "./TaskCard";
 type Props = {
   col: Board["columns"][number];
   index: number;
+  board?: Board;
 };
-export default function Col({ col, index }: Props) {
+export default function Col({ col, index, board }: Props) {
   const keyColors: {
     [key: number]: string;
   } = {
@@ -20,12 +21,12 @@ export default function Col({ col, index }: Props) {
           className={`w-[15px] h-[15px] rounded-full bg-${keyColors[index]}`}
         />
         <p className="text-xs font-bold uppercase tracking-[2.4px] text-medium-grey">
-          {col.name} ({col.tasks.push.length})
+          {col.name} ({col.tasks.length})
         </p>
       </div>
       <div className="flex flex-col gap-5">
         {col.tasks.map((task, i) => (
-          <TaskCard task={task} key={`${task.description}${i}`} />
+          <TaskCard task={task} key={`${task.description}${i}`} board={board} />
         ))}
       </div>
     </div>

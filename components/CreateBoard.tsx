@@ -4,8 +4,10 @@ import { IconCross } from "@/app/assets/icons";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { ButtonPrimary, ButtonSecondary } from "./ui/buttons";
 import { Input } from "./ui/input";
+import { createBoard } from "@/app/api";
 
 type Props = {
+  user: any;
   isDark: boolean;
   setCreatedBoard: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -17,7 +19,7 @@ type FormValues = {
   }[];
 };
 
-export default function CreateBoard({ isDark, setCreatedBoard }: Props) {
+export default function CreateBoard({ user, isDark, setCreatedBoard }: Props) {
   const ref = React.useRef(null);
   const {
     register,
@@ -44,11 +46,15 @@ export default function CreateBoard({ isDark, setCreatedBoard }: Props) {
   });
   useOnClickOutside(ref, () => setCreatedBoard(false));
 
-  // function onSubmit(data): SubmitHandler<FormValues> {
-  //   console.log(data);
-  // }
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    const url = `${process.env.NEXT_PUBLIC_DB_HOST}/user`;
+    const board = {
+      ...data,
+      slug: data.name.toLowerCase().replace(/\s/g, "-"),
+      user: user?.id,
+    };
+    await createBoard(url, board);
+    console.log(url, "Url create board");
   };
 
   return (

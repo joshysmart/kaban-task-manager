@@ -21,23 +21,27 @@ import Dashboard from "@/components/Dashboard";
  */
 export default async function Home() {
   const user = await currentUser();
+
   // const user = null;
   let url;
   if (user) {
     url = `${process.env.DB_HOST}/user/names/${user.id}`;
+    const { data: boardNames } = await getBoardNames(url);
+    const slug = boardNames && boardNames[0]?.slug;
+    if (!boardNames) {
+      redirect("/platform-launch");
+    }
+    if (slug) {
+      redirect(`/${slug}`);
+    }
   } else {
     redirect("/platform-launch");
   }
-  const { data: boardNames } = await getBoardNames(url);
+  //const {data: board} = await getBoard(url);
 
   return (
-    <DashboardLayout
-      boardNames={boardNames}
-      board={{
-        columns: [],
-      }}
-    >
-      <Dashboard board={undefined} />
+    <DashboardLayout user={user}>
+      <Dashboard user={user} />
     </DashboardLayout>
   );
 }

@@ -9,6 +9,7 @@ import TaskOptions from "./TaskOptions";
 type Props = {
   task: Board["columns"][number]["tasks"][number];
   isDark: boolean;
+  boardColumns?: Board["columns"];
   setViewTask: React.Dispatch<React.SetStateAction<boolean>>;
   setEditTask: React.Dispatch<React.SetStateAction<boolean>>;
   setDeleteTask: React.Dispatch<React.SetStateAction<boolean>>;
@@ -25,6 +26,7 @@ type FormValues = {
 export default function ViewTask({
   task,
   isDark,
+  boardColumns,
   setViewTask,
   setEditTask,
   setDeleteTask,
@@ -55,6 +57,7 @@ export default function ViewTask({
       ...watchFieldArray[index],
     };
   });
+  const selectDropdownOptions = boardColumns.map((column) => column.name);
 
   useOnClickOutside(ref, () => setViewTask(false));
 
@@ -160,7 +163,7 @@ export default function ViewTask({
           >
             Current Status
           </p>
-          <Select options={["Todo", "Doing", "Done"]} isDark={isDark} />
+          <Select options={selectDropdownOptions} isDark={isDark} />
         </form>
       </div>
     </div>

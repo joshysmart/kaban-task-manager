@@ -2,7 +2,7 @@ import { SignOutButton, useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import React from "react";
 import { useOnClickOutside } from "usehooks-ts";
-
+import Image from "next/image";
 type Props = {
   setShowDropDown: React.Dispatch<React.SetStateAction<boolean>>;
   setShowEditBoard: React.Dispatch<React.SetStateAction<boolean>>;
@@ -18,7 +18,8 @@ export default function BoardOptions({
 }: Props) {
   const ref = React.useRef(null);
   const { isLoaded, isSignedIn, user } = useUser();
-
+  const initails =
+    (user?.username && user?.username.charAt(0).toUpperCase()) || "U";
   useOnClickOutside(ref, () => setShowDropDown(false));
 
   return (
@@ -44,11 +45,13 @@ export default function BoardOptions({
       </div>
       <div className="flex items-center gap-4 mt-6">
         <div className="flex items-center justify-center w-8 h-8 text-white bg-green-600 rounded-full">
-          <p className="text-base">
-            {user?.username
-              ?.split(" ")
-              .map((name) => name.charAt(0).toUpperCase())}
-          </p>
+          <Image
+            src={user?.profileImageUrl ?? ""}
+            alt={initails}
+            width={32}
+            height={32}
+            className="rounded-full"
+          />
         </div>
         <h3 className="">{user?.username ?? "No user"}</h3>
       </div>

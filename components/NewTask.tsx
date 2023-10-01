@@ -1,6 +1,6 @@
 import { IconCross } from "@/app/assets/icons";
 import React from "react";
-import { useFieldArray, useForm } from "react-hook-form";
+import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { useOnClickOutside } from "usehooks-ts";
 import Select from "./Select";
 import { cn } from "@/lib/utils";
@@ -10,6 +10,7 @@ import { Input, Textarea } from "./ui/input";
 type Props = {
   setShowAddNewTask: React.Dispatch<React.SetStateAction<boolean>>;
   isDark: boolean;
+  boardColumns?: Board["columns"];
 };
 
 type FormValues = {
@@ -21,11 +22,16 @@ type FormValues = {
   }[];
 };
 
-export default function NewTask({ setShowAddNewTask, isDark }: Props) {
+export default function NewTask({
+  setShowAddNewTask,
+  isDark,
+  boardColumns,
+}: Props) {
   const ref: React.MutableRefObject<null> = React.useRef(null);
   const {
     register,
     control,
+    handleSubmit,
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
@@ -47,8 +53,13 @@ export default function NewTask({ setShowAddNewTask, isDark }: Props) {
     control,
     name: "subtasks",
   });
+  const selectDropdownOptions = boardColumns.map((column) => column.name);
 
   useOnClickOutside(ref, () => setShowAddNewTask(false));
+
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    console.log(data, "data");
+  };
 
   return (
     <div className="fixed top-0 flex items-center justify-center w-full h-screen bg-overlay z-[60] px-4 md:px-0">
@@ -57,6 +68,7 @@ export default function NewTask({ setShowAddNewTask, isDark }: Props) {
           isDark ? "bg-dark-grey" : "bg-white"
         }`}
         ref={ref}
+        onSubmit={handleSubmit(onSubmit)}
       >
         <h3
           className={`text-lg font-bold ${
@@ -82,6 +94,7 @@ export default function NewTask({ setShowAddNewTask, isDark }: Props) {
             maxLength={20}
             maxLengthMessage="Task title cannot be more than 20 characters"
             requiredMessage="Please enter a title for the task"
+            placeholder="e.g. Take a 15 minute break"
           />
           {errors.title && (
             <p className="text-xs text-red">{errors.title.message}</p>
@@ -160,7 +173,7 @@ export default function NewTask({ setShowAddNewTask, isDark }: Props) {
           >
             Status
           </p>
-          <Select options={["Todo", "Doing", "Done"]} isDark={isDark} />
+          <Select options={selectDropdownOptions} isDark={isDark} />
         </fieldset>
 
         <fieldset className="flex flex-col w-full mt-6">
