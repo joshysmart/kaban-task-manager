@@ -5,6 +5,7 @@ import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { ButtonPrimary, ButtonSecondary } from "./ui/buttons";
 import { Input } from "./ui/input";
 import { createBoard } from "@/app/api";
+import { useRouter } from "next/navigation";
 
 type Props = {
   user: any;
@@ -20,6 +21,7 @@ type FormValues = {
 };
 
 export default function CreateBoard({ user, isDark, setCreatedBoard }: Props) {
+  const router = useRouter();
   const ref = React.useRef(null);
   const {
     register,
@@ -53,8 +55,11 @@ export default function CreateBoard({ user, isDark, setCreatedBoard }: Props) {
       slug: data.name.toLowerCase().replace(/\s/g, "-"),
       user: user?.id,
     };
-    await createBoard(url, board);
-    console.log(url, "Url create board");
+    const res = await createBoard(url, board);
+    router.refresh();
+    if (res) {
+      setCreatedBoard(false);
+    }
   };
 
   return (

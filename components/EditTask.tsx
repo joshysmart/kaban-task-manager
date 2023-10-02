@@ -1,4 +1,4 @@
-import React, { use } from "react";
+import React from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useOnClickOutside } from "usehooks-ts";
 import { ButtonPrimary, ButtonSecondary } from "./ui/buttons";
@@ -20,8 +20,9 @@ type FormValues = {
   description: string;
   subtasks: {
     title: string;
-    isCompleted?: boolean;
+    isCompleted: boolean;
   }[];
+  status: string;
 };
 
 export default function EditTask({ task, isDark, setEditTask }: Props) {
@@ -29,6 +30,7 @@ export default function EditTask({ task, isDark, setEditTask }: Props) {
 
   const {
     register,
+    setValue,
     control,
     formState: { errors },
   } = useForm<FormValues>({
@@ -156,7 +158,12 @@ export default function EditTask({ task, isDark, setEditTask }: Props) {
           >
             Status
           </p>
-          <Select options={selectDropdownOptions} isDark={isDark} />
+          <Select
+            options={selectDropdownOptions}
+            isDark={isDark}
+            setValue={setValue}
+            register={register}
+          />
         </fieldset>
 
         <fieldset className="flex flex-col w-full mt-6">

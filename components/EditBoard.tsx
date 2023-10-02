@@ -1,17 +1,18 @@
 import { IconCross } from "@/app/assets/icons";
 import React from "react";
-import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { useOnClickOutside } from "usehooks-ts";
 import { ButtonPrimary, ButtonSecondary } from "./ui/buttons";
-import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
 import { Input } from "./ui/input";
+import { editBoard } from "@/app/api";
 
 type Props = {
   board?: Board;
   setShowEditBoard: React.Dispatch<React.SetStateAction<boolean>>;
   isDark: boolean;
+  user: any;
 };
 
 type FormValues = {
@@ -21,7 +22,12 @@ type FormValues = {
   }[];
 };
 
-export default function EditBoard({ board, setShowEditBoard, isDark }: Props) {
+export default function EditBoard({
+  board,
+  setShowEditBoard,
+  isDark,
+  user,
+}: Props) {
   const ref = React.useRef(null);
   const {
     register,
@@ -42,12 +48,23 @@ export default function EditBoard({ board, setShowEditBoard, isDark }: Props) {
   });
   const router = useRouter();
   const { userId } = useAuth();
-
+  const noOfDefaultColumns = board?.columns ? board?.columns?.length - 1 : 0;
   useOnClickOutside(ref, () => setShowEditBoard(false));
 
-  function handleEditBoard(data: FormValues, id?: string) {
+  async function handleEditBoard(data: FormValues, id?: string) {
     if (!userId) {
       return router.push("/sign-in");
+    }
+
+    const url = `${process.env.NEXT_PUBLIC_DB_HOST}/user`;
+    const res = await editBoard(url, {
+      ...data,
+      id: id,
+      userId: user.id,
+    });
+    router.refresh();
+    if (res) {
+      setShowEditBoard(false);
     }
   }
 
@@ -58,7 +75,7 @@ export default function EditBoard({ board, setShowEditBoard, isDark }: Props) {
           isDark ? "bg-dark-grey" : "bg-white"
         }`}
         ref={ref}
-        onSubmit={handleSubmit((data) => handleEditBoard(data, board?.id))}
+        onSubmit={handleSubmit((data) => handleEditBoard(data, board?._id))}
       >
         <h3
           className={`text-lg font-bold ${
@@ -112,7 +129,18 @@ export default function EditBoard({ board, setShowEditBoard, isDark }: Props) {
                   maxLengthMessage="Column name cannot be more than 20 characters"
                   requiredMessage="Please enter a name for the column"
                 />
-                <button type="button" onClick={() => remove(index)}>
+                <button
+                  type="button"
+                  onClick={() => remove(index)}
+                  disabled={index <= noOfDefaultColumns}
+                  aria-label="Remove column"
+                  title={`${
+                    index <= noOfDefaultColumns
+                      ? "Can't remove saved columns"
+                      : "Remove columns"
+                  }`}
+                  className="disabled:cursor-not-allowed"
+                >
                   <IconCross />
                 </button>
               </div>

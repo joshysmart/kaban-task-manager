@@ -7,11 +7,13 @@ import { cn } from "@/lib/utils";
 import { ButtonPrimary, ButtonSecondary } from "./ui/buttons";
 import { Input, Textarea } from "./ui/input";
 import { createTask } from "@/app/api";
+import { useRouter } from "next/navigation";
 
 type Props = {
   setShowAddNewTask: React.Dispatch<React.SetStateAction<boolean>>;
   isDark: boolean;
   boardColumns?: Board["columns"];
+  boardId?: string;
   user: any;
 };
 
@@ -30,10 +32,13 @@ export default function NewTask({
   isDark,
   user,
   boardColumns,
+  boardId,
 }: Props) {
+  const router = useRouter();
   const ref: React.MutableRefObject<null> = React.useRef(null);
   const {
     register,
+    setValue,
     control,
     handleSubmit,
     formState: { errors },
@@ -68,8 +73,11 @@ export default function NewTask({
     const task = {
       ...data,
       userId: user?.id,
+      id: boardId,
     };
+
     const res = await createTask(url, task);
+    router.refresh();
     if (res) {
       setShowAddNewTask(false);
     }
@@ -191,6 +199,7 @@ export default function NewTask({
             options={selectDropdownOptions}
             isDark={isDark}
             register={register}
+            setValue={setValue}
           />
         </fieldset>
 

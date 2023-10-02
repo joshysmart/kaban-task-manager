@@ -51,6 +51,7 @@ export default function EmptyBoard({ board, user }: Props) {
           setShowEditBoard={setShowEditBoard}
           isDark={isDark}
           board={board}
+          user={user}
         />
       )}
       {createdBoard && (

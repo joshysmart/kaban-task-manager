@@ -101,6 +101,7 @@ export default function BottomSection({
           isDark={isDark}
           boardColumns={board?.columns}
           user={user}
+          boardId={board?._id}
         />
       )}
       {showEditBoard && (
@@ -108,6 +109,7 @@ export default function BottomSection({
           setShowEditBoard={setShowEditBoard}
           isDark={isDark}
           board={board}
+          user={user}
         />
       )}
       {showDeleteBoard && (

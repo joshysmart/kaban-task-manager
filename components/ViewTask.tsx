@@ -45,6 +45,7 @@ export default function ViewTask({
   const [viewOptions, setViewOptions] = React.useState(false);
   const {
     register,
+    setValue,
     watch,
     control,
     formState: {},
@@ -75,8 +76,6 @@ export default function ViewTask({
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     console.log(data);
   };
-
-  console.log(selectDropdownOptions);
 
   return (
     <div className="fixed top-0 left-0 flex items-center justify-center w-full h-screen bg-overlay z-[60] overflow-y-scroll pb-8 px-4 md:px-0">
@@ -180,6 +179,7 @@ export default function ViewTask({
             options={selectDropdownOptions}
             isDark={isDark}
             register={register}
+            setValue={setValue}
           />
         </form>
       </div>

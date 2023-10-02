@@ -1,5 +1,7 @@
+import { revalidateTag } from "next/cache";
+
 async function getBoard(url: string) {
-  const res = await fetch(url);
+  const res = await fetch(url, { next: { tags: ["board"] } });
   if (!res.ok) {
     throw new Error("Failed to fetch data");
   }
@@ -15,7 +17,7 @@ async function getBoardNames(url: string): Promise<
     }
   | { data: undefined }
 > {
-  const res = await fetch(url);
+  const res = await fetch(url, { next: { tags: ["board"] } });
   if (!res.ok) {
     return { data: undefined };
   }
@@ -40,6 +42,30 @@ async function createBoard(
   });
   if (!res.ok) {
     throw new Error("Failed to create board");
+  }
+  return res.json();
+}
+
+async function editBoard(
+  url: string,
+  data: {
+    name: string;
+    columns: {
+      name: string;
+    }[];
+    userId?: string;
+    id?: string;
+  }
+) {
+  const res = await fetch(url, {
+    method: "PUT",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  if (!res.ok) {
+    throw new Error("Failed to edit board");
   }
   return res.json();
 }
@@ -69,4 +95,4 @@ async function createTask(
   return res.json();
 }
 
-export { getBoard, getBoardNames, createBoard, createTask };
+export { getBoard, getBoardNames, createBoard, createTask, editBoard };

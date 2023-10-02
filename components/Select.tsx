@@ -1,7 +1,7 @@
 import { IconChevronDown } from "@/app/assets/icons";
 import { cn } from "@/lib/utils";
 import React from "react";
-import { UseFormRegister, useForm } from "react-hook-form";
+import { UseFormRegister, UseFormSetValue } from "react-hook-form";
 
 type FormValues = {
   title: string;
@@ -17,14 +17,14 @@ type Props = {
   options: string[];
   isDark: boolean;
   register: UseFormRegister<FormValues>;
+  setValue: UseFormSetValue<FormValues>;
 };
 
-export default function Select({ options, isDark, register }: Props) {
-  const [selected, setSelected] = React.useState(options[0]);
+export default function Select({ options, isDark, register, setValue }: Props) {
   const [dropDown, setDropDown] = React.useState(false);
 
   function handleSelect(option: string) {
-    setSelected(option);
+    setValue("status", option);
     setDropDown(false);
   }
 
@@ -43,8 +43,6 @@ export default function Select({ options, isDark, register }: Props) {
         <input
           type="text"
           id="status"
-          value={selected}
-          readOnly
           className={cn(
             "w-full cursor-pointer text-[13px] font-medium bg-white text-black focus:border-none focus:outline-main-purple",
             {
