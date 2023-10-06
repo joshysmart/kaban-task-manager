@@ -11,7 +11,6 @@ type Props = {
     slug: string;
   }[];
   board?: Board;
-  user: any;
   children: React.ReactNode;
   showAddNewTask: boolean;
   showEditBoard: boolean;
@@ -26,7 +25,6 @@ type Props = {
 export default function BottomSection({
   boardNames,
   board,
-  user,
   createdBoard,
   setCreatedBoard,
   showAddNewTask,
@@ -89,18 +87,13 @@ export default function BottomSection({
         </section>
       </section>
       {createdBoard && (
-        <CreateBoard
-          isDark={isDark}
-          setCreatedBoard={setCreatedBoard}
-          user={user}
-        />
+        <CreateBoard isDark={isDark} setCreatedBoard={setCreatedBoard} />
       )}
       {showAddNewTask && (
         <NewTask
           setShowAddNewTask={setShowAddNewTask}
           isDark={isDark}
           boardColumns={board?.columns}
-          user={user}
           boardId={board?._id}
         />
       )}
@@ -109,7 +102,6 @@ export default function BottomSection({
           setShowEditBoard={setShowEditBoard}
           isDark={isDark}
           board={board}
-          user={user}
         />
       )}
       {showDeleteBoard && (

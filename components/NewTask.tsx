@@ -8,13 +8,13 @@ import { ButtonPrimary, ButtonSecondary } from "./ui/buttons";
 import { Input, Textarea } from "./ui/input";
 import { createTask } from "@/app/api";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@clerk/nextjs";
 
 type Props = {
   setShowAddNewTask: React.Dispatch<React.SetStateAction<boolean>>;
   isDark: boolean;
   boardColumns?: Board["columns"];
   boardId?: string;
-  user: any;
 };
 
 type FormValues = {
@@ -30,11 +30,12 @@ type FormValues = {
 export default function NewTask({
   setShowAddNewTask,
   isDark,
-  user,
   boardColumns,
   boardId,
 }: Props) {
+  const { userId } = useAuth();
   const router = useRouter();
+  const { getToken } = useAuth();
   const ref: React.MutableRefObject<null> = React.useRef(null);
   const {
     register,
@@ -69,14 +70,14 @@ export default function NewTask({
   useOnClickOutside(ref, () => setShowAddNewTask(false));
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    const url = `${process.env.NEXT_PUBLIC_DB_HOST}/user/task`;
+    const token = await getToken();
     const task = {
       ...data,
-      userId: user?.id,
       id: boardId,
+      userId,
     };
 
-    const res = await createTask(url, task);
+    const res = await createTask(token, task);
     router.refresh();
     if (res) {
       setShowAddNewTask(false);
@@ -113,8 +114,8 @@ export default function NewTask({
             isDark={isDark}
             label="title"
             register={register}
-            maxLength={50}
-            maxLengthMessage="Task title cannot be more than 20 characters"
+            maxLength={200}
+            maxLengthMessage="Task title cannot be more than 200 characters"
             requiredMessage="Please enter a title for the task"
             placeholder="e.g. Take a 15 minute break"
           />

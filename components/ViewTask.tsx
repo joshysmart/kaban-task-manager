@@ -80,7 +80,7 @@ export default function ViewTask({
   return (
     <div className="fixed top-0 left-0 flex items-center justify-center w-full h-screen bg-overlay z-[60] overflow-y-scroll pb-8 px-4 md:px-0">
       <div
-        className={`md:w-[70%] lg:w-[34%] md:p-8 p-6 rounded-md z-[70] ${
+        className={`md:w-[70%] lg:w-[34%] w-full  md:p-8 p-6 rounded-md z-[70] ${
           isDark ? "bg-dark-grey" : "bg-white"
         }`}
         ref={ref}

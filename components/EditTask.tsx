@@ -7,12 +7,16 @@ import { cn } from "@/lib/utils";
 import Select from "./Select";
 import Input from "./ui/input/Input";
 import { Textarea } from "./ui/input";
+import { editTask } from "@/app/api";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@clerk/nextjs";
 
 type Props = {
   task: Board["columns"][number]["tasks"][number];
   isDark: boolean;
   setEditTask: React.Dispatch<React.SetStateAction<boolean>>;
   boardColumns?: Board["columns"];
+  boardId?: string;
 };
 
 type FormValues = {
@@ -25,29 +29,54 @@ type FormValues = {
   status: string;
 };
 
-export default function EditTask({ task, isDark, setEditTask }: Props) {
+export default function EditTask({
+  task,
+  isDark,
+  setEditTask,
+  boardColumns,
+  boardId,
+}: Props) {
+  const router = useRouter();
+  const { getToken } = useAuth();
   const ref: React.MutableRefObject<null> = React.useRef(null);
 
   const {
     register,
     setValue,
     control,
+    handleSubmit,
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
       title: task.title,
       description: task.description,
       subtasks: task.subtasks,
+      status: task.status,
     },
   });
   const { fields, append, remove } = useFieldArray({
     control,
     name: "subtasks",
   });
-  const selectDropdownOptions = boardColumns.map((column) => column.name);
+  const selectDropdownOptions =
+    boardColumns?.map((column) => column.name) || [];
 
   useOnClickOutside(ref, () => setEditTask(false));
 
+  async function onSubmit(data: FormValues) {
+    const token = await getToken();
+    const updatedTask = {
+      ...data,
+      id: boardId,
+    };
+    console.log(token, updatedTask);
+
+    const res = await editTask(token, updatedTask);
+    router.refresh();
+    if (res) {
+      setEditTask(false);
+    }
+  }
   return (
     <div className="fixed top-0 flex right-0 items-center justify-center w-full h-screen bg-overlay z-[60] px-4 md:px-0">
       <form
@@ -55,6 +84,7 @@ export default function EditTask({ task, isDark, setEditTask }: Props) {
           isDark ? "bg-dark-grey" : "bg-white"
         }`}
         ref={ref}
+        onSubmit={handleSubmit(onSubmit)}
       >
         <h3
           className={`text-lg font-bold ${
@@ -78,8 +108,8 @@ export default function EditTask({ task, isDark, setEditTask }: Props) {
             label="title"
             register={register}
             requiredMessage="Please enter a title for the task"
-            maxLength={20}
-            maxLengthMessage="Task title cannot be more than 20 characters"
+            maxLength={200}
+            maxLengthMessage="Task title cannot be more than 200 characters"
           />
           {errors.title && (
             <p className="text-xs text-red">{errors.title.message}</p>
@@ -167,7 +197,7 @@ export default function EditTask({ task, isDark, setEditTask }: Props) {
         </fieldset>
 
         <fieldset className="flex flex-col w-full mt-6">
-          <ButtonPrimary type="submit">Create Task</ButtonPrimary>
+          <ButtonPrimary type="submit">Save Changes</ButtonPrimary>
         </fieldset>
       </form>
     </div>

@@ -6,9 +6,9 @@ import { ButtonPrimary, ButtonSecondary } from "./ui/buttons";
 import { Input } from "./ui/input";
 import { createBoard } from "@/app/api";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@clerk/nextjs";
 
 type Props = {
-  user: any;
   isDark: boolean;
   setCreatedBoard: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -20,8 +20,9 @@ type FormValues = {
   }[];
 };
 
-export default function CreateBoard({ user, isDark, setCreatedBoard }: Props) {
+export default function CreateBoard({ isDark, setCreatedBoard }: Props) {
   const router = useRouter();
+  const { userId, getToken } = useAuth();
   const ref = React.useRef(null);
   const {
     register,
@@ -49,13 +50,13 @@ export default function CreateBoard({ user, isDark, setCreatedBoard }: Props) {
   useOnClickOutside(ref, () => setCreatedBoard(false));
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    const url = `${process.env.NEXT_PUBLIC_DB_HOST}/user`;
+    const token = await getToken();
     const board = {
       ...data,
       slug: data.name.toLowerCase().replace(/\s/g, "-"),
-      user: user?.id,
+      user: userId,
     };
-    const res = await createBoard(url, board);
+    const res = await createBoard(board, token);
     router.refresh();
     if (res) {
       setCreatedBoard(false);

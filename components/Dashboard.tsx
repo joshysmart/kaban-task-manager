@@ -8,11 +8,10 @@ type Props = {
 };
 
 export default function Dashboard({ board, user }: Props) {
-  console.log(!board);
   return (
     <div className="h-full dashboard">
       {board && board?.columns?.length !== 0 ? (
-        <BoardColumns board={board} />
+        <BoardColumns board={board} user={user} />
       ) : (
         <EmptyBoard board={board} user={user} />
       )}

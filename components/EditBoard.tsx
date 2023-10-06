@@ -12,7 +12,6 @@ type Props = {
   board?: Board;
   setShowEditBoard: React.Dispatch<React.SetStateAction<boolean>>;
   isDark: boolean;
-  user: any;
 };
 
 type FormValues = {
@@ -22,12 +21,7 @@ type FormValues = {
   }[];
 };
 
-export default function EditBoard({
-  board,
-  setShowEditBoard,
-  isDark,
-  user,
-}: Props) {
+export default function EditBoard({ board, setShowEditBoard, isDark }: Props) {
   const ref = React.useRef(null);
   const {
     register,
@@ -47,20 +41,20 @@ export default function EditBoard({
     name: "columns",
   });
   const router = useRouter();
-  const { userId } = useAuth();
+  const { userId, getToken } = useAuth();
   const noOfDefaultColumns = board?.columns ? board?.columns?.length - 1 : 0;
   useOnClickOutside(ref, () => setShowEditBoard(false));
 
   async function handleEditBoard(data: FormValues, id?: string) {
+    const token = await getToken();
     if (!userId) {
       return router.push("/sign-in");
     }
 
-    const url = `${process.env.NEXT_PUBLIC_DB_HOST}/user`;
-    const res = await editBoard(url, {
+    const res = await editBoard(token, {
       ...data,
       id: id,
-      userId: user.id,
+      userId,
     });
     router.refresh();
     if (res) {

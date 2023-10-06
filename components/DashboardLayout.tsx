@@ -11,13 +11,11 @@ type Props = {
     slug: string;
   }[];
   board?: Board;
-  user: any;
 };
 export default function DashboardLayout({
+  children, // will be a page or nested layout
   boardNames,
   board,
-  user,
-  children, // will be a page or nested layout
 }: Props) {
   const [showAddNewTask, setShowAddNewTask] = React.useState(false);
   const [showEditBoard, setShowEditBoard] = React.useState(false);
@@ -46,7 +44,6 @@ export default function DashboardLayout({
         setShowDeleteBoard={setShowDeleteBoard}
         setCreatedBoard={setCreatedBoard}
         createdBoard={createdBoard}
-        user={user}
       >
         {children}
       </BottomSection>

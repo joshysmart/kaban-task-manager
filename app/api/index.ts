@@ -1,14 +1,32 @@
-import { revalidateTag } from "next/cache";
+const fetcher = async (
+  path: string,
+  method: string,
+  data?: any,
+  token?: string | null
+) => {
+  const baseUrl = `${process.env.NEXT_PUBLIC_DB_HOST}`;
 
-async function getBoard(url: string) {
-  const res = await fetch(url, { next: { tags: ["board"] } });
+  const url = baseUrl + path;
+  const res = await fetch(url, {
+    method,
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
+  });
+
   if (!res.ok) {
-    throw new Error("Failed to fetch data");
+    throw new Error(`Failed to ${method} ${url}`);
   }
   return res.json();
+};
+
+async function getBoard(path: string) {
+  return fetcher(path, "GET");
 }
 
-async function getBoardNames(url: string): Promise<
+async function getBoardNames(path: string): Promise<
   | {
       data: {
         _id: string;
@@ -17,37 +35,23 @@ async function getBoardNames(url: string): Promise<
     }
   | { data: undefined }
 > {
-  const res = await fetch(url, { next: { tags: ["board"] } });
-  if (!res.ok) {
-    return { data: undefined };
-  }
-  return res.json();
+  return fetcher(path, "GET");
 }
 
 async function createBoard(
-  url: string,
   data: {
     name: string;
     columns: {
       name: string;
     }[];
-  }
+  },
+  token: string | null
 ): Promise<{ data: Board }> {
-  const res = await fetch(url, {
-    method: "POST",
-    body: JSON.stringify(data),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  if (!res.ok) {
-    throw new Error("Failed to create board");
-  }
-  return res.json();
+  return fetcher("/user", "POST", data, token);
 }
 
 async function editBoard(
-  url: string,
+  token: string | null,
   data: {
     name: string;
     columns: {
@@ -57,21 +61,11 @@ async function editBoard(
     id?: string;
   }
 ) {
-  const res = await fetch(url, {
-    method: "PUT",
-    body: JSON.stringify(data),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  if (!res.ok) {
-    throw new Error("Failed to edit board");
-  }
-  return res.json();
+  return fetcher("/user", "PUT", data, token);
 }
 
 async function createTask(
-  url: string,
+  token: string | null,
   data: {
     title: string;
     description: string;
@@ -82,17 +76,29 @@ async function createTask(
     }[];
   }
 ) {
-  const res = await fetch(url, {
-    method: "POST",
-    body: JSON.stringify(data),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  if (!res.ok) {
-    throw new Error("Failed to create task");
-  }
-  return res.json();
+  return fetcher("/user/task", "POST", data, token);
 }
 
-export { getBoard, getBoardNames, createBoard, createTask, editBoard };
+async function editTask(
+  token: string | null,
+  data: {
+    title: string;
+    description: string;
+    status: string;
+    subtasks: {
+      title: string;
+      isCompleted: boolean;
+    }[];
+  }
+) {
+  return fetcher("/user/task", "PUT", data, token);
+}
+
+export {
+  getBoard,
+  getBoardNames,
+  createBoard,
+  createTask,
+  editBoard,
+  editTask,
+};

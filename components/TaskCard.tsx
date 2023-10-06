@@ -68,6 +68,7 @@ export default function TaskCard({ task, board }: Props) {
           isDark={isDark}
           setEditTask={setEditTask}
           boardColumns={board?.columns}
+          boardId={board?._id}
         />
       )}
       {deleteTask && (

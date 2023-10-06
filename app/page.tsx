@@ -26,7 +26,7 @@ export default async function Home() {
   let url;
   if (user) {
     url = `${process.env.DB_HOST}/user/names/${user.id}`;
-    const { data: boardNames } = await getBoardNames(url);
+    const { data: boardNames } = await getBoardNames(`/user/names/${user.id}`);
     const slug = boardNames && boardNames[0]?.slug;
     if (!boardNames) {
       redirect("/platform-launch");
@@ -40,8 +40,8 @@ export default async function Home() {
   //const {data: board} = await getBoard(url);
 
   return (
-    <DashboardLayout user={user}>
-      <Dashboard user={user} />
+    <DashboardLayout>
+      <Dashboard />
     </DashboardLayout>
   );
 }
