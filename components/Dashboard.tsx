@@ -4,10 +4,9 @@ import BoardColumns from "./BoardColumns";
 
 type Props = {
   board?: Board;
-  user?: any;
 };
 
-export default function Dashboard({ board, user }: Props) {
+export default function Dashboard({ board }: Props) {
   return (
     <div className="h-full dashboard">
       {board && board?.columns?.length !== 0 ? (

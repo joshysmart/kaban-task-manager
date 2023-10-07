@@ -2,7 +2,7 @@
 import React from "react";
 import Navbar from "./Navbar";
 import { NavHeightProvider } from "@/contexts";
-import BottomSection from "./BottomSection";
+import BottomSection from "@/components/BottomSection";
 
 type Props = {
   children: React.ReactNode;
