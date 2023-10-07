@@ -20,7 +20,7 @@ import Dashboard from "@/components/Dashboard";
  * @returns {JSX.Element} The rendered JSX element.
  */
 export default async function Home() {
-  const user = (await currentUser()) ?? null;
+  const user = await currentUser();
 
   // const user = null;
   if (user) {
