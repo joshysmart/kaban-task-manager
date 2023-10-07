@@ -11,9 +11,9 @@ export default function Dashboard({ board, user }: Props) {
   return (
     <div className="h-full dashboard">
       {board && board?.columns?.length !== 0 ? (
-        <BoardColumns board={board} user={user} />
+        <BoardColumns board={board} />
       ) : (
-        <EmptyBoard board={board} user={user} />
+        <EmptyBoard board={board} />
       )}
     </div>
   );

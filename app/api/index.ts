@@ -71,10 +71,10 @@ async function deleteBoard(token: string | null, data: { id?: string }) {
 async function createTask(
   token: string | null,
   data: {
+    id?: string;
     title: string;
     description: string;
     status: string;
-    taskId: string;
     subtasks: {
       title: string;
       isCompleted: boolean;

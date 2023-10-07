@@ -33,7 +33,6 @@ export default function NewTask({
   boardColumns,
   boardId,
 }: Props) {
-  const { userId } = useAuth();
   const router = useRouter();
   const { getToken } = useAuth();
   const ref: React.MutableRefObject<null> = React.useRef(null);
@@ -74,7 +73,6 @@ export default function NewTask({
     const task = {
       ...data,
       id: boardId,
-      userId,
     };
 
     const res = await createTask(token, task);
