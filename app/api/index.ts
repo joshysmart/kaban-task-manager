@@ -70,6 +70,7 @@ async function createTask(
     title: string;
     description: string;
     status: string;
+    taskId: string;
     subtasks: {
       title: string;
       isCompleted: boolean;
@@ -85,6 +86,8 @@ async function editTask(
     title: string;
     description: string;
     status: string;
+    oldStatus: string;
+    taskId: string;
     subtasks: {
       title: string;
       isCompleted: boolean;
@@ -94,6 +97,16 @@ async function editTask(
   return fetcher("/user/task", "PUT", data, token);
 }
 
+async function deleteTask(
+  token: string | null,
+  data: {
+    status: string;
+    taskId: string;
+  }
+) {
+  return fetcher("/user/task", "DELETE", data, token);
+}
+
 export {
   getBoard,
   getBoardNames,
@@ -101,4 +114,5 @@ export {
   createTask,
   editBoard,
   editTask,
+  deleteTask,
 };

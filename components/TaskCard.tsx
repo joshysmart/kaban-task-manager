@@ -4,6 +4,7 @@ import React from "react";
 import { ViewTask, EditTask, DeleteModal } from ".";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
+import { deleteTask } from "@/app/api";
 
 type Props = {
   task: Board["columns"][number]["tasks"][number];
@@ -13,7 +14,7 @@ type Props = {
 export default function TaskCard({ task, board }: Props) {
   const [viewTask, setViewTask] = React.useState(false);
   const [editTask, setEditTask] = React.useState(false);
-  const [deleteTask, setDeleteTask] = React.useState(false);
+  const [showDeleteTask, setShowDeleteTask] = React.useState(false);
   const themeContext = useThemeContext();
   const isDark = themeContext.theme === "dark";
 
@@ -23,12 +24,22 @@ export default function TaskCard({ task, board }: Props) {
   const numberOfTasks = task.subtasks.length;
 
   const router = useRouter();
-  const { userId } = useAuth();
+  const { userId, getToken } = useAuth();
 
-  function handleDeleteTask() {
+  async function handleDeleteTask() {
+    console.log("delete task");
+
+    const token = await getToken();
     if (!userId) {
       return router.push("/sign-in");
     }
+    const deletedTask = {
+      taskId: task._id,
+      status: task.status,
+    };
+    await deleteTask(token, deletedTask);
+    router.refresh();
+    setShowDeleteTask(false);
   }
 
   return (
@@ -58,7 +69,7 @@ export default function TaskCard({ task, board }: Props) {
           isDark={isDark}
           setViewTask={setViewTask}
           setEditTask={setEditTask}
-          setDeleteTask={setDeleteTask}
+          setDeleteTask={setShowDeleteTask}
           boardColumns={board?.columns}
         />
       )}
@@ -71,12 +82,12 @@ export default function TaskCard({ task, board }: Props) {
           boardId={board?._id}
         />
       )}
-      {deleteTask && (
+      {showDeleteTask && (
         <DeleteModal
           isDark={isDark}
           title="Delete this task?"
-          setShowDeleteModal={setDeleteTask}
-          description="Are you sure you want to delete the ‘Build settings UI’ task and its subtasks? This action cannot be reversed."
+          setShowDeleteModal={setShowDeleteTask}
+          description={`Are you sure you want to delete the '${task.title}' task and its subtasks? This action cannot be reversed.`}
           handleDelete={handleDeleteTask}
         />
       )}

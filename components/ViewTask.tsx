@@ -5,6 +5,9 @@ import Select from "./Select";
 import { useOnClickOutside } from "usehooks-ts";
 import { cn } from "@/lib/utils";
 import TaskOptions from "./TaskOptions";
+import { useAuth } from "@clerk/nextjs";
+import { editTask } from "@/app/api";
+import { useRouter } from "next/navigation";
 
 type Props = {
   task: Board["columns"][number]["tasks"][number];
@@ -41,6 +44,8 @@ export default function ViewTask({
   setEditTask,
   setDeleteTask,
 }: Props) {
+  const { getToken } = useAuth();
+  const router = useRouter();
   const ref = React.useRef(null);
   const [viewOptions, setViewOptions] = React.useState(false);
   const {
@@ -49,7 +54,6 @@ export default function ViewTask({
     watch,
     control,
     formState: {},
-    handleSubmit,
   } = useForm<FormValues>({
     mode: "onChange",
     defaultValues: {
@@ -73,9 +77,23 @@ export default function ViewTask({
 
   useOnClickOutside(ref, () => setViewTask(false));
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
-    console.log(data);
-  };
+  React.useEffect(() => {
+    const subscription = watch(async (data) => {
+      const token = await getToken();
+      const updatedTask = {
+        ...(data as FormValues),
+        title: task.title,
+        description: task.description,
+        taskId: task._id,
+        oldStatus: task.status,
+      };
+
+      await editTask(token, updatedTask);
+      router.refresh();
+    });
+
+    return () => subscription.unsubscribe();
+  }, [watch, task, router, getToken]);
 
   return (
     <div className="fixed top-0 left-0 flex items-center justify-center w-full h-screen bg-overlay z-[60] overflow-y-scroll pb-8 px-4 md:px-0">
@@ -120,11 +138,7 @@ export default function ViewTask({
           {controlledFields.filter((field) => field.isCompleted).length} of{" "}
           {controlledFields.length})
         </p>
-        <form
-          action=""
-          onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col gap-2 mt-4"
-        >
+        <form action="" className="flex flex-col gap-2 mt-4">
           {controlledFields.map((field, index) => (
             <fieldset
               key={field.id}

@@ -67,7 +67,6 @@ export default function EditTask({
     const token = await getToken();
     const updatedTask = {
       ...data,
-      id: boardId,
       taskId: task._id,
       oldStatus: task.status,
     };
