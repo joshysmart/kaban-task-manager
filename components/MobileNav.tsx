@@ -62,6 +62,7 @@ export default function MobileNav({
   function handleCreateBoard() {
     if (userId) {
       setCreatedBoard(true);
+      setShowMobileNav(false);
       return;
     }
     return router.push("/sign-in");

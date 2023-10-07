@@ -17,10 +17,14 @@ export default function BoardOptions({
   isDark,
 }: Props) {
   const ref = React.useRef(null);
-  const { isSignedIn, user } = useUser();
+  const { isSignedIn, user, isLoaded } = useUser();
   const initails =
     (user?.username && user?.username.charAt(0).toUpperCase()) || "U";
   useOnClickOutside(ref, () => setShowDropDown(false));
+
+  if (!isLoaded) {
+    return null;
+  }
 
   return (
     <div

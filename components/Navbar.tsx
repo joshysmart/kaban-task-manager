@@ -1,4 +1,3 @@
-"use client";
 import React from "react";
 import {
   IconAddTaskMobile,
@@ -31,7 +30,6 @@ type Props = {
 
 export default function Navbar({
   board,
-  createdBoard,
   boardNames,
   setCreatedBoard,
   setShowAddNewTask,

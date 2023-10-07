@@ -4,6 +4,7 @@ import { useNavHeightContext, useThemeContext } from "@/contexts";
 import { CreateBoard, DeleteModal, EditBoard, NewTask, SideNav } from ".";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
+import { deleteBoard } from "@/app/api";
 
 type Props = {
   boardNames?: {
@@ -45,12 +46,17 @@ export default function BottomSection({
   };
 
   const router = useRouter();
-  const { userId } = useAuth();
+  const { userId, getToken } = useAuth();
 
-  function handleDeleteBoard() {
+  async function handleDeleteBoard() {
+    const token = await getToken();
     if (!userId) {
       return router.push("/sign-in");
     }
+    await deleteBoard(token, { id: board?._id });
+    router.refresh();
+    router.push("/");
+    setShowDeleteBoard(false);
   }
 
   return (
@@ -106,7 +112,7 @@ export default function BottomSection({
       )}
       {showDeleteBoard && (
         <DeleteModal
-          description="Are you sure you want to delete the ‘Platform Launch’ board? This action will remove all columns and tasks and cannot be reversed."
+          description={`Are you sure you want to delete the '${board?.name}' board? This action will remove all columns and tasks and cannot be reversed.`}
           isDark={isDark}
           title="Delete this board?"
           setShowDeleteModal={setShowDeleteBoard}

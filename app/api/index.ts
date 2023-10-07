@@ -64,6 +64,10 @@ async function editBoard(
   return fetcher("/user", "PUT", data, token);
 }
 
+async function deleteBoard(token: string | null, data: { id?: string }) {
+  return fetcher("/user", "DELETE", data, token);
+}
+
 async function createTask(
   token: string | null,
   data: {
@@ -113,6 +117,7 @@ export {
   createBoard,
   createTask,
   editBoard,
+  deleteBoard,
   editTask,
   deleteTask,
 };

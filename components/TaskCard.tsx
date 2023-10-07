@@ -5,6 +5,7 @@ import { ViewTask, EditTask, DeleteModal } from ".";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
 import { deleteTask } from "@/app/api";
+import capitalize from "@/utils/capitalize";
 
 type Props = {
   task: Board["columns"][number]["tasks"][number];
@@ -57,7 +58,7 @@ export default function TaskCard({ task, board }: Props) {
           }`}
         >
           {" "}
-          {task.title}
+          {capitalize(task.title)}
         </p>
         <p className="text-xs font-bold text-medium-grey">
           {completedSubTasks} of {numberOfTasks} subtasks
