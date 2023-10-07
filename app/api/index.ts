@@ -12,7 +12,7 @@ const fetcher = async (
     body: JSON.stringify(data),
     headers: {
       "Content-Type": "application/json",
-      authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
   });
 

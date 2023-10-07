@@ -68,8 +68,9 @@ export default function EditTask({
     const updatedTask = {
       ...data,
       id: boardId,
+      taskId: task._id,
+      oldStatus: task.status,
     };
-    console.log(token, updatedTask);
 
     const res = await editTask(token, updatedTask);
     router.refresh();

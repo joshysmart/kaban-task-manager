@@ -7,6 +7,7 @@ type Board = {
       title: string;
       description: string;
       status: string;
+      _id: string;
       subtasks: {
         title: string;
         isCompleted: boolean;
