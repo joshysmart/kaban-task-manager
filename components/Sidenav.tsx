@@ -32,7 +32,7 @@ export default function SideNav({
 
   const navList = boardNames
     ?.map((boardName) => boardName.slug)
-    .map((slug, index) => {
+    .map((slug) => {
       const isActive = pathname === `/${slug}`;
       return (
         <li key={slug}>
