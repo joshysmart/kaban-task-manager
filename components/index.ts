@@ -1,10 +1,11 @@
-import ThemeSwitcher from "./ThemeSwitcher";
-import ViewTask from "./ViewTask";
-import EditTask from "./EditTask";
-import CreateBoard from "./CreateBoard";
-import NewTask from "./NewTask";
-import EditBoard from "./EditBoard";
-import DeleteModal from "./DeleteModal";
+import ThemeSwitcher from "@/components/ThemeSwitcher";
+import ViewTask from "@/components/ViewTask";
+import EditTask from "@/components/EditTask";
+import CreateBoard from "@/components/CreateBoard";
+import NewTask from "@/components/NewTask";
+import EditBoard from "@/components/EditBoard";
+import DeleteModal from "@/components/DeleteModal";
+import SideNav from "@/components/SideNav";
 
 export {
   ThemeSwitcher,
@@ -14,5 +15,6 @@ export {
   NewTask,
   EditBoard,
   DeleteModal,
+  SideNav,
 };
 
