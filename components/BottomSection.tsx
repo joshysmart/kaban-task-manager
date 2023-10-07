@@ -1,10 +1,11 @@
 import React from "react";
 import { IconShowSidebar } from "@/app/assets/icons";
 import { useNavHeightContext, useThemeContext } from "@/contexts";
-import { CreateBoard, DeleteModal, EditBoard, NewTask, SideNav } from ".";
+import { CreateBoard, DeleteModal, EditBoard, NewTask } from ".";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
 import { deleteBoard } from "@/app/api";
+import SideNav from "./SideNav";
 
 type Props = {
   boardNames?: {
