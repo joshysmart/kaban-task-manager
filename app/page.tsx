@@ -20,8 +20,9 @@ import Dashboard from "@/components/Dashboard";
  * @returns {JSX.Element} The rendered JSX element.
  */
 export default async function Home() {
-  const user = (await currentUser()) ?? null;
+  const user = await currentUser();
 
+  if (!user) redirect("/platform-launch");
   // const user = null;
   if (user) {
     const { data: boardNames } = await getBoardNames(`/user/names/${user.id}`);
@@ -32,10 +33,7 @@ export default async function Home() {
     if (slug) {
       redirect(`/${slug}`);
     }
-  } else {
-    redirect("/platform-launch");
-  }
-  //const {data: board} = await getBoard(url);
+  } //const {data: board} = await getBoard(url);
 
   return (
     <DashboardLayout>

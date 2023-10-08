@@ -19,6 +19,8 @@ export default async function Page({ params: { slug } }: Props) {
   const boardNameUrl = user ? `/user/names/${user.id}` : "/names";
   const { data: boardNames } = await getBoardNames(boardNameUrl);
 
+  if (!user) return null;
+
   return (
     <DashboardLayout boardNames={boardNames} board={board}>
       <Dashboard board={board} />

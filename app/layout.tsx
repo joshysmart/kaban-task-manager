@@ -1,16 +1,18 @@
-import './globals.css'
-import type { Metadata } from 'next'
-import { Plus_Jakarta_Sans } from 'next/font/google'
-import { ClerkProvider } from '@clerk/nextjs'
-import { ThemeProvider } from '@/contexts'
+import "./globals.css";
+import type { Metadata } from "next";
+import { Plus_Jakarta_Sans } from "next/font/google";
+import { ClerkProvider } from "@clerk/nextjs";
+import { ThemeProvider } from "@/contexts";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const plusJakartaSans = Plus_Jakarta_Sans({ subsets: ['latin'] })
-
+const plusJakartaSans = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'Kanban task management web app',
-  description: 'This is a solution to the Kanban task management web app challenge on Frontend Mentor',
-}
+  title: "Kanban task management web app",
+  description:
+    "This is a solution to the Kanban task management web app challenge on Frontend Mentor",
+};
 
 /**
  * Renders the root layout of the application.
@@ -22,15 +24,17 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <ClerkProvider>
       <html lang="en">
         <body className={plusJakartaSans.className}>
           <ThemeProvider>{children}</ThemeProvider>
+          <ToastContainer />
         </body>
       </html>
     </ClerkProvider>
-  )
+  );
 }
+

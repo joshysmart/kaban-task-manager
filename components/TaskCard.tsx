@@ -1,28 +1,25 @@
-"use client";
 import { useThemeContext } from "@/contexts/theme-provider";
 import React from "react";
 import { ViewTask, EditTask, DeleteModal } from ".";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
 import { deleteTask } from "@/app/api";
-import capitalize from "@/utils/capitalize";
+import Box from "./Box";
+
+type Task = Board["columns"][number]["tasks"][number];
 
 type Props = {
-  task: Board["columns"][number]["tasks"][number];
+  task: Task;
   board?: Board;
+  index: number;
 };
 
-export default function TaskCard({ task, board }: Props) {
+export default function TaskCard({ task, board, index }: Props) {
   const [viewTask, setViewTask] = React.useState(false);
   const [editTask, setEditTask] = React.useState(false);
   const [showDeleteTask, setShowDeleteTask] = React.useState(false);
   const themeContext = useThemeContext();
   const isDark = themeContext.theme === "dark";
-
-  const completedSubTasks = task.subtasks.filter(
-    (subtask) => subtask.isCompleted
-  ).length;
-  const numberOfTasks = task.subtasks.length;
 
   const router = useRouter();
   const { userId, getToken } = useAuth();
@@ -45,25 +42,13 @@ export default function TaskCard({ task, board }: Props) {
 
   return (
     <>
-      <div
-        className={`py-[23px] px-4 flex flex-col gap-2 w-[280px] shadow-card-shadow transition-colors rounded-lg ${
-          isDark ? "bg-dark-grey" : "bg-white"
-        }`}
-        role="button"
-        onClick={() => setViewTask(true)}
-      >
-        <p
-          className={`text-base font-bold transition-colors ${
-            isDark ? "text-white" : "text-black"
-          }`}
-        >
-          {" "}
-          {capitalize(task.title)}
-        </p>
-        <p className="text-xs font-bold text-medium-grey">
-          {completedSubTasks} of {numberOfTasks} subtasks
-        </p>
-      </div>
+      <Box
+        isDark={isDark}
+        task={task}
+        setViewTask={setViewTask}
+        type="task"
+        index={index}
+      />
       {viewTask && (
         <ViewTask
           task={task}
