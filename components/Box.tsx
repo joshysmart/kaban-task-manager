@@ -6,7 +6,6 @@ type Task = Board["columns"][number]["tasks"][number];
 
 type BoxProps = {
   type: string;
-  name: string;
   isDark: boolean;
   task: Task;
   index: number;
@@ -24,7 +23,7 @@ const Box: React.FC<BoxProps> = React.memo(function Box({
     (subtask) => subtask.isCompleted
   ).length;
   const numberOfTasks = task.subtasks.length;
-  const [{ opacity }, drag] = useDrag(
+  const [{}, drag] = useDrag(
     () => ({
       type,
       item: { task, columnIndex: index },
