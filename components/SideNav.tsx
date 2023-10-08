@@ -82,10 +82,7 @@ export default function SideNav({
           {navList}
           <button
             className={cn(
-              "lg:max-w-[90%] flex items-center gap-4 px-8 py-4 text-base font-bold text-main-purple rounded-[0_999px_999px_0] hover:bg-opacity-10 hover:text-main-purple hover:bg-main-purple",
-              {
-                "hover:bg-white hover:bg-opacity-100": isDark,
-              }
+              "flex items-center gap-4 pl-8 py-4 text-base font-bold text-main-purple rounded-[0_999px_999px_0]"
             )}
             type="button"
             onClick={handleCreateBoard}
@@ -98,10 +95,7 @@ export default function SideNav({
           <ThemeSwitcher />
           <button
             className={cn(
-              "flex items-center gap-4 px-8 text-base font-bold text-medium-grey hover:bg-opacity-10 hover:text-main-purple hover:bg-main-purple rounded-[0_999px_999px_0] max-w-[90%] py-4",
-              {
-                "hover:bg-white hover:bg-opacity-100": isDark,
-              }
+              "flex items-center gap-4 px-8 text-base font-bold text-medium-grey rounded-[0_999px_999px_0] max-w-[90%] py-4"
             )}
             type="button"
             onClick={() => setShowSidebar(!showSidebar)}
