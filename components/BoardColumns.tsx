@@ -33,17 +33,19 @@ export default function BoardColumns({ board }: Props) {
         (task) => task._id === item.task._id
       ) as number;
       const token = await getToken();
-
-      columns?.[item.columnIndex].tasks.splice(draggedTaskIndex, 1);
-      columns?.[index].tasks.push(item.task);
-      setColumns([...(columns ?? [])]);
-
       const updatedTask = {
         ...item.task,
         taskId: item.task._id,
         status: columns?.[index].name as string,
         oldStatus: columns?.[item.columnIndex].name as string,
       };
+
+      if (item.columnIndex === index) return;
+      const newcolumns = Array.from(columns ?? []);
+      newcolumns?.[item.columnIndex].tasks.splice(draggedTaskIndex, 1);
+      newcolumns?.[index].tasks.push(item.task);
+      setColumns(newcolumns);
+
       await editTask(token, updatedTask);
       router.refresh();
       toast("Wow so easy! Board updated");
