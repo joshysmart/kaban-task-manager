@@ -42,7 +42,7 @@ export default function BottomSection({
   const isDark = theme === "dark";
 
   const myStyle = {
-    height: `calc(100vh - ${navbarHeight}px)`,
+    height: `calc(100dvh - ${navbarHeight}px)`,
   };
 
   const router = useRouter();
