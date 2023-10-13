@@ -15,8 +15,6 @@ This is a solution to the [Kanban task management web app challenge on Frontend 
   - [Useful resources](#useful-resources)
 - [Author](#author)
 
-**Note: Delete this note and update the table of contents based on what sections you keep.**
-
 ## Overview
 
 ### The challenge
@@ -65,7 +63,7 @@ Users should be able to:
 
 ### What I learned
 
-Challenging yet fun to build, I improved my nextjs skill by working with server components and tried to utilize packages like react hook form for better extensible, easy to use, validate and performant form manaagement. The backend API was written with express, authenticated using clerk and hosted seperately. which allows easy access of board data for public and private users that are logged in. I implemented the drag and drop functionality with react DnD, plain and boring no animation. I also used the onClickOutside hook to manage clicks outside a particular area. There is a bug with clerk that appears once in a while but can be fixed by refreshing, I havent yet figured that out just refresh for now.
+I honed my Next.js skills, particularly by delving into server components. Used react hook form for improved extensibility, usability, and performance in managing forms The backend API was written with express, authenticated using clerk and hosted separately, facilitating access to board data for both the public and logged-in users. To enable drag-and-drop functionality, React DnD was implemented, although without animations. Additionally, I employed the onClickOutside hook to handle clicks outside specific areas. There is an intermittent bug related to Clerk that occasionally appears, but for the time being, a quick refresh resolves the issue. I'm still working on a permanent solution for this."
 
 ```js
 const user = await currentUser();
