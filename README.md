@@ -14,7 +14,6 @@ This is a solution to the [Kanban task management web app challenge on Frontend 
   - [Continued development](#continued-development)
   - [Useful resources](#useful-resources)
 - [Author](#author)
-- [Acknowledgments](#acknowledgments)
 
 **Note: Delete this note and update the table of contents based on what sections you keep.**
 
@@ -37,20 +36,12 @@ Users should be able to:
 
 ### Screenshot
 
-![](./screenshot.jpg)
-
-Add a screenshot of your solution. The easiest way to do this is to use Firefox to view your project, right-click the page and select "Take a Screenshot". You can choose either a full-height screenshot or a cropped one based on how long the page is. If it's very long, it might be best to crop it.
-
-Alternatively, you can use a tool like [FireShot](https://getfireshot.com/) to take the screenshot. FireShot has a free option, so you don't need to purchase it.
-
-Then crop/optimize/edit your image however you like, add it to your project, and update the file path in the image above.
-
-**Note: Delete this note and the paragraphs above when you add your screenshot. If you prefer not to add a screenshot, feel free to remove this entire section.**
+![](/../main/app/assets/images/Screenshot-Desktop.png?raw=true)
 
 ### Links
 
-- Solution URL: [Add solution URL here](https://your-solution-url.com)
-- Live Site URL: [Add live site URL here](https://your-live-site-url.com)
+- Solution URL: [solution URL](https://www.frontendmentor.io/solutions/kanban-task-management-webapp-skwKSXqRxs)
+- Live Site URL: [Add live site URL here](https://kaban-task-manager.vercel.app/platform-launch)
 
 ## My process
 
@@ -61,61 +52,69 @@ Then crop/optimize/edit your image however you like, add it to your project, and
 - Flexbox
 - CSS Grid
 - Mobile-first workflow
+- CN (utility function)
 - [React](https://reactjs.org/) - JS library
 - [Next.js](https://nextjs.org/) - React framework
-- [Styled Components](https://styled-components.com/) - For styles
-
-**Note: These are just examples. Delete this note and replace the list above with your own choices**
+- [TailwindCSS](https://tailwindcss.com/) - For styles
+- [React Hook Form](https://www.react-hook-form.com/) - For form validation and state management
+- [Clerk](https://clerk.com/) - For authentication and user management
+- [ExpressJs](https://expressjs.com/) - Nodejs framework for creating APIs
+- [ReactDnD](https://react-dnd.github.io/) - Build complex drag and drop interfaces
+- [Typescript](https://www.typescriptlang.org/) - Type inference for great tooling
+- [useHook](https://usehooks-ts.com/) - For click outside
 
 ### What I learned
 
-Use this section to recap over some of your major learnings while working through this project. Writing these out and providing code samples of areas you want to highlight is a great way to reinforce your own knowledge.
+Challenging yet fun to build, I improved my nextjs skill by working with server components and tried to utilize packages like react hook form for better extensible, easy to use, validate and performant form manaagement. The backend API was written with express, authenticated using clerk and hosted seperately. which allows easy access of board data for public and private users that are logged in. I implemented the drag and drop functionality with react DnD, plain and boring no animation. I also used the onClickOutside hook to manage clicks outside a particular area. There is a bug with clerk that appears once in a while but can be fixed by refreshing, I havent yet figured that out just refresh for now.
 
-To see how you can add code snippets, see below:
+```js
+const user = await currentUser();
 
-```html
-<h1>Some HTML code I'm proud of</h1>
-```
-
-```css
-.proud-of-this-css {
-  color: papayawhip;
-}
+// throws an error
 ```
 
 ```js
-const proudOfThisFunc = () => {
-  console.log("🎉");
+const proudOfThisFunc = (): "light" | "dark" => {
+  const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+  const initialColorScheme = mediaQuery.matches ? "dark" : "light";
+  const [mode, setMode] =
+    (React.useState < "light") | ("dark" > initialColorScheme);
+
+  const changeHandler = (event: MediaQueryListEvent) => {
+    const colorScheme = event.matches ? "dark" : "light";
+    setMode(colorScheme);
+  };
+
+  React.useEffect(() => {
+    const addEventListener = () => {
+      mediaQuery.addEventListener("change", changeHandler);
+    };
+
+    const removeEventListener = () => {
+      mediaQuery.removeEventListener("change", changeHandler);
+    };
+
+    addEventListener();
+    setMode(initialColorScheme);
+
+    return removeEventListener;
+  }, [initialColorScheme, mediaQuery]);
+
+  return mode;
 };
 ```
 
-If you want more help with writing markdown, we'd recommend checking out [The Markdown Guide](https://www.markdownguide.org/) to learn more.
-
-**Note: Delete this note and the content within this section and replace with your own learnings.**
-
 ### Continued development
 
-Use this section to outline areas that you want to continue focusing on in future projects. These could be concepts you're still not completely comfortable with or techniques you found useful that you want to refine and perfect.
-
-**Note: Delete this note and the content within this section and replace with your own plans for continued development.**
+Finally looking to go into mobile development so...
 
 ### Useful resources
 
-- [Example resource 1](https://www.example.com) - This helped me for XYZ reason. I really liked this pattern and will use it going forward.
-- [Example resource 2](https://www.example.com) - This is an amazing article which helped me finally understand XYZ. I'd recommend it to anyone still learning this concept.
-
-**Note: Delete this note and replace the list above with resources that helped you during the challenge. These could come in handy for anyone viewing your solution or for yourself when you look back on this project in the future.**
+- [React hook form](https://www.react-hook-form.com/) - This helped me with Performant, flexible and extensible forms with easy-to-use validation.
+- [https://clerk.com/](https://clerk.com/) - This is an amazing package for integrating complete user management UIs and APIs, purpose-built for React, Next.js, and the Modern Web.
 
 ## Author
 
-- Website - [Add your name here](https://www.your-site.com)
-- Frontend Mentor - [@yourusername](https://www.frontendmentor.io/profile/yourusername)
-- Twitter - [@yourusername](https://www.twitter.com/yourusername)
-
-**Note: Delete this note and add/remove/edit lines above based on what links you'd like to share.**
-
-## Acknowledgments
-
-This is where you can give a hat tip to anyone who helped you out on this project. Perhaps you worked in a team or got some inspiration from someone else's solution. This is the perfect place to give them some credit.
-
-**Note: Delete this note and edit this section's content as necessary. If you completed this challenge by yourself, feel free to delete this section entirely.**
+- Website - [Portfolio](https://joshysmart.vercel.app)
+- Frontend Mentor - [@joshysmart](https://www.frontendmentor.io/profile/joshysmart)
+- Twitter - [@saniojoshua](twitter.com/saniojoshua)
