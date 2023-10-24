@@ -1,5 +1,6 @@
 import { IconDarkTheme, IconLightTheme } from "@/app/assets/icons";
 import { useThemeContext } from "@/contexts/theme-provider";
+import { cn } from "@/lib/utils";
 import React from "react";
 
 type Props = {};
@@ -32,7 +33,14 @@ export default function ThemeSwitcher({}: Props) {
             className="input__toggle"
             defaultChecked={dark}
           />
-          <span className="slider__toggle absolute w-[14px] h-[14px] rounded-full bg-white duration-500 z-50"></span>
+          <span
+            className={cn(
+              "absolute w-[14px] h-[14px] rounded-full bg-white duration-500 z-50",
+              {
+                "transform translate-x-[18px]": dark,
+              }
+            )}
+          ></span>
           <span className="absolute top-0 bottom-0 left-0 right-0 duration-500 rounded-full cursor-pointer bg-main-purple"></span>
         </label>
         <IconDarkTheme />
