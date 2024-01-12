@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@clerk/nextjs": "^4.23.1",
+    "@clerk/nextjs": "^4.29.3",
     "@radix-ui/react-select": "^1.2.2",
     "@types/node": "20.4.1",
     "@types/react": "18.2.14",
