@@ -12,6 +12,11 @@ type Props = {
 
 export default async function Page({ params: { slug } }: Props) {
   const user = await currentUser();
+  console.log(user, "user");
+
+  // .catch((err) => {
+  // console.log(err);
+  // });
 
   const boardUrl = user ? `/user/${slug}` : `/${slug}`;
   const { data: board } = await getBoard(boardUrl);

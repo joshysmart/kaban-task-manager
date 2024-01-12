@@ -23,7 +23,13 @@ export default function BoardOptions({
   useOnClickOutside(ref, () => setShowDropDown(false));
 
   if (!isLoaded) {
-    return null;
+    return (
+      <div
+        className={`animate-pulse absolute right-0 top-[135%] w-[192px] p-4 rounded-lg ${
+          isDark ? "bg-very-dark-grey-dark-bg text-white" : "bg-white text-base"
+        }`}
+      />
+    );
   }
 
   return (
