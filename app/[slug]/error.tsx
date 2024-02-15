@@ -17,7 +17,7 @@ export default function Error({
 
   return (
     <div className="flex items-center justify-center flex-col h-screen gap-4">
-      <h2 className="text-lg font-bold">Something went wrong!</h2>
+      <h2 className="text-lg font-bold">Server is asleep!</h2>
       <ButtonPrimary
         handleClick={
           // Attempt to recover by trying to re-render the segment
@@ -28,7 +28,7 @@ export default function Error({
         }
         className="px-8"
       >
-        Try again
+        Try Again (Wake)
       </ButtonPrimary>
     </div>
   );
